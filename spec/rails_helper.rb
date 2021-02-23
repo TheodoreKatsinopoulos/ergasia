@@ -24,7 +24,7 @@ require 'rspec/rails'
 # require only the support files necessary.
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
-require 'database_cleaner'
+
 
 # [...]
 # configure shoulda matchers to use rspec as the test framework and full matcher libraries for rails
@@ -41,6 +41,8 @@ RSpec.configure do |config|
   # add `FactoryBot` methods
   config.include FactoryBot::Syntax::Methods
   config.include RequestSpecHelper, type: :request
+  config.include RequestSpecHelper
+  config.include ControllerSpecHelper
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
   config.before(:suite) do
@@ -58,9 +60,3 @@ RSpec.configure do |config|
 end
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
-begin
-  ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  puts e.to_s.strip
-  exit 1
-end
